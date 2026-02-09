@@ -5,6 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Department of Architecture and Planning - IIT Roorkee</title>
     <style>
+        :root {
+            --bg-primary: #f4f4f4;
+            --bg-secondary: #ffffff;
+            --text-primary: #333;
+            --text-secondary: #666;
+            --accent-primary: #5B0E14;
+            --accent-secondary: #F1E194;
+            --border-color: #e0e0e0;
+            --highlight-bg: #FEF9E7;
+            --card-shadow: rgba(0,0,0,0.1);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --text-primary: #e0e0e0;
+            --text-secondary: #b0b0b0;
+            --accent-primary: #8B1E24;
+            --accent-secondary: #F1E194;
+            --border-color: #444;
+            --highlight-bg: #3a3a3a;
+            --card-shadow: rgba(0,0,0,0.5);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -14,8 +38,58 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            color: #333;
-            background-color: #f4f4f4;
+            color: var(--text-primary);
+            background-color: var(--bg-primary);
+            position: relative;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Background logo watermark */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-15deg);
+            width: 700px;
+            height: 700px;
+            background-image: url('iit_logo.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.05;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        [data-theme="dark"] body::before {
+            opacity: 0.08;
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px var(--card-shadow);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: 0 6px 20px var(--card-shadow);
         }
 
         header {
@@ -23,12 +97,16 @@
             color: white;
             padding: 2rem 0;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 1;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
+            position: relative;
+            z-index: 1;
         }
 
         h1 {
@@ -44,19 +122,34 @@
         }
 
         .main-content {
-            background: white;
+            background: var(--bg-secondary);
             margin: 2rem auto;
             padding: 3rem;
             border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 20px var(--card-shadow);
+            position: relative;
+            z-index: 1;
+            transition: background-color 0.3s ease;
         }
 
         h2 {
-            color: #5B0E14;
+            color: var(--accent-primary);
             font-size: 2rem;
             margin-bottom: 1.5rem;
-            border-bottom: 3px solid #5B0E14;
+            border-bottom: 3px solid var(--accent-primary);
             padding-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        h2::before {
+            content: '📚';
+            font-size: 1.8rem;
+        }
+
+        h2:has(+ .timeline)::before {
+            content: '🏛️';
         }
 
         .history-section {
@@ -70,11 +163,21 @@
         }
 
         .highlight {
-            background-color: #FEF9E7;
+            background-color: var(--highlight-bg);
             padding: 1.5rem;
-            border-left: 4px solid #5B0E14;
+            border-left: 4px solid var(--accent-primary);
             margin: 1.5rem 0;
             border-radius: 5px;
+            position: relative;
+        }
+
+        .highlight::before {
+            content: '⭐';
+            position: absolute;
+            left: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
         }
 
         .timeline {
@@ -84,33 +187,31 @@
         .timeline-item {
             padding: 1rem;
             margin-bottom: 1rem;
-            border-left: 3px solid #5B0E14;
+            border-left: 3px solid var(--accent-primary);
             padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '📍';
+            position: absolute;
+            left: -12px;
+            top: 1rem;
         }
 
         .timeline-item h3 {
-            color: #5B0E14;
+            color: var(--accent-primary);
             margin-bottom: 0.5rem;
         }
 
         footer {
-            background: #5B0E14;
+            background: var(--accent-primary);
             color: white;
             text-align: center;
             padding: 1.5rem 0;
             margin-top: 3rem;
-        }
-
-        .logo-section {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .dap-logo {
-            font-size: 3rem;
-            font-weight: bold;
-            color: #5B0E14;
-            letter-spacing: 2px;
+            position: relative;
+            z-index: 1;
         }
 
         .students-grid {
@@ -118,22 +219,47 @@
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 2rem;
             margin-top: 2rem;
+            perspective: 1000px;
         }
 
         .student-card {
-            background: white;
-            border: 2px solid #e0e0e0;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
             border-radius: 10px;
             padding: 1.5rem;
             text-align: center;
             transition: all 0.3s ease;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .student-card.scatter {
+            visibility: visible;
+        }
+
+        .student-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(241, 225, 148, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+        }
+
+        .student-card:hover::before {
+            left: 100%;
         }
 
         .student-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(91, 14, 20, 0.2);
-            border-color: #5B0E14;
+            transform: translateY(-10px) rotateY(5deg);
+            box-shadow: 0 10px 25px var(--card-shadow);
+            border-color: var(--accent-primary);
         }
 
         .photo-placeholder {
@@ -145,9 +271,16 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 3px solid #5B0E14;
+            border: 3px solid var(--accent-primary);
             color: #999;
             font-size: 0.9rem;
+            position: relative;
+        }
+
+        .photo-placeholder::after {
+            content: '👤';
+            font-size: 3rem;
+            position: absolute;
         }
 
         .student-info {
@@ -156,15 +289,31 @@
 
         .student-name {
             font-size: 1.1rem;
-            color: #5B0E14;
+            color: var(--accent-primary);
             margin-bottom: 0.5rem;
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .student-name::before {
+            content: '🎓';
         }
 
         .enrollment-no {
             font-size: 0.9rem;
-            color: #666;
+            color: var(--text-secondary);
             font-style: italic;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .enrollment-no::before {
+            content: '🆔';
         }
 
         .student-photo {
@@ -172,27 +321,250 @@
             height: 150px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid #5B0E14;
+            border: 3px solid var(--accent-primary);
+        }
+
+        /* Batch Section Special Styling */
+        .batch-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .batch-title {
+            font-size: 2.5rem;
+            color: var(--accent-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .batch-title::before {
+            content: '🎓';
+            font-size: 2.5rem;
+        }
+
+        .batch-count {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .batch-count::before {
+            content: '👥';
+        }
+
+        /* Animation Styles */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes rotateIn {
+            from {
+                opacity: 0;
+                transform: rotate(-10deg) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: rotate(0) scale(1);
+            }
+        }
+
+        /* Scatter Animation for Student Cards */
+        @keyframes scatterIn {
+            0% {
+                opacity: 0;
+                transform: translate(var(--tx), var(--ty)) rotate(var(--r)) scale(0);
+            }
+            60% {
+                opacity: 1;
+                transform: translate(0, 0) rotate(calc(var(--r) * 0.3)) scale(1.1);
+            }
+            100% {
+                opacity: 1;
+                transform: translate(0, 0) rotate(0) scale(1);
+            }
+        }
+
+        .student-card.scatter {
+            animation: scatterIn 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        .fade-in-up {
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .fade-in-left {
+            opacity: 0;
+            animation: fadeInLeft 0.8s ease-out forwards;
+        }
+
+        .fade-in-right {
+            opacity: 0;
+            animation: fadeInRight 0.8s ease-out forwards;
+        }
+
+        .scale-in {
+            opacity: 0;
+            animation: scaleIn 0.6s ease-out forwards;
+        }
+
+        .rotate-in {
+            opacity: 0;
+            animation: rotateIn 0.8s ease-out forwards;
+        }
+
+        /* Stagger delays for elements */
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+        .delay-6 { animation-delay: 0.6s; }
+
+        /* Scroll reveal animation */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.6s ease-out;
+        }
+
+        .scroll-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Ripple animation */
+        @keyframes ripple {
+            from {
+                transform: scale(0);
+                opacity: 1;
+            }
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* Decorative floating shapes */
+        .floating-shape {
+            position: fixed;
+            pointer-events: none;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+        }
+
+        .shape-1 {
+            top: 10%;
+            left: 5%;
+            font-size: 3rem;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape-2 {
+            top: 30%;
+            right: 10%;
+            font-size: 2.5rem;
+            animation: float 5s ease-in-out infinite 1s;
+        }
+
+        .shape-3 {
+            bottom: 20%;
+            left: 8%;
+            font-size: 4rem;
+            animation: float 7s ease-in-out infinite 2s;
+        }
+
+        .shape-4 {
+            bottom: 15%;
+            right: 5%;
+            font-size: 3.5rem;
+            animation: float 6s ease-in-out infinite 0.5s;
         }
     </style>
 </head>
 <body>
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark Mode">
+        🌙
+    </button>
+
+    <!-- Floating Decorative Shapes -->
+    <div class="floating-shape shape-1">📐</div>
+    <div class="floating-shape shape-2">🏛️</div>
+    <div class="floating-shape shape-3">📏</div>
+    <div class="floating-shape shape-4">🎨</div>
+    <div class="floating-shape" style="top: 50%; left: 15%; font-size: 2rem; animation: float 8s ease-in-out infinite 1.5s;">✏️</div>
+    <div class="floating-shape" style="top: 70%; right: 15%; font-size: 3rem; animation: float 9s ease-in-out infinite 0.8s;">🏗️</div>
+    <div class="floating-shape" style="top: 25%; right: 20%; font-size: 2.5rem; animation: float 7s ease-in-out infinite 2s;">📊</div>
+    <div class="floating-shape" style="bottom: 35%; left: 12%; font-size: 3rem; animation: float 6.5s ease-in-out infinite 1.2s;">🖌️</div>
+
     <header>
         <div class="container">
-            <h1>Department of Architecture and Planning</h1>
-            <p class="subtitle">Indian Institute of Technology Roorkee</p>
+            <h1 class="fade-in-up delay-1">Department of Architecture and Planning</h1>
+            <p class="subtitle fade-in-up delay-2">Indian Institute of Technology Roorkee</p>
         </div>
     </header>
 
     <div class="container">
         <div class="main-content">
-            <div class="logo-section">
-                <div class="dap-logo"><strong>DAP</strong></div>
-            </div>
-
-            <h2>History of the Department</h2>
+            <h2 class="fade-in-left scroll-reveal">History of the Department</h2>
             
-            <div class="history-section">
+            <div class="history-section scroll-reveal">
                 <p>
                     The Department of Architecture and Planning (<strong>DAP</strong>) at IIT Roorkee has a rich and distinguished history that dates back to 1956, making it one of the oldest architecture departments in India. Initially established as the Department of Architecture at the then University of Roorkee, <strong>DAP</strong> has been at the forefront of architectural education and research in the country.
                 </p>
@@ -207,36 +579,36 @@
             </div>
 
             <div class="timeline">
-                <h2>Key Milestones</h2>
+                <h2 class="fade-in-left scroll-reveal">Key Milestones</h2>
                 
-                <div class="timeline-item">
+                <div class="timeline-item scroll-reveal">
                     <h3>1956 - Foundation</h3>
                     <p>The Department of Architecture was established at the University of Roorkee, becoming one of the pioneering architecture schools in India. <strong>DAP</strong>'s foundation marked the beginning of formal architectural education in North India.</p>
                 </div>
 
-                <div class="timeline-item">
+                <div class="timeline-item scroll-reveal">
                     <h3>1960s-1970s - Growth and Expansion</h3>
                     <p><strong>DAP</strong> expanded its curriculum and facilities during this period, introducing specialized courses in building construction, architectural design, and urban studies. The department established itself as a center of excellence for architectural education.</p>
                 </div>
 
-                <div class="timeline-item">
+                <div class="timeline-item scroll-reveal">
                     <h3>1980s-1990s - Modernization</h3>
                     <p>The department modernized its teaching methodology and infrastructure. <strong>DAP</strong> introduced computer-aided design (CAD) and updated its laboratories to meet contemporary architectural practice standards.</p>
                 </div>
 
-                <div class="timeline-item">
+                <div class="timeline-item scroll-reveal">
                     <h3>2001 - IIT Roorkee Transformation</h3>
                     <p>With the conversion of University of Roorkee to IIT Roorkee, the department became the Department of Architecture and Planning (<strong>DAP</strong>), gaining enhanced status and resources as part of the prestigious IIT system.</p>
                 </div>
 
-                <div class="timeline-item">
+                <div class="timeline-item scroll-reveal">
                     <h3>2000s-Present - Research and Innovation</h3>
                     <p><strong>DAP</strong> has become a hub for cutting-edge research in sustainable architecture, heritage conservation, urban planning, and smart cities. The department continues to produce graduates who shape India's built environment.</p>
                 </div>
             </div>
 
-            <div class="history-section">
-                <h2>Academic Programs</h2>
+            <div class="history-section scroll-reveal">
+                <h2 class="fade-in-left">Academic Programs</h2>
                 <p>
                     Today, <strong>DAP</strong> offers comprehensive programs including Bachelor of Architecture (B.Arch), Master of Architecture (M.Arch) with various specializations, Master of Planning (M.Plan), and Ph.D. programs. The department is known for its rigorous curriculum that balances design excellence with technical proficiency and sustainable practices.
                 </p>
@@ -252,10 +624,12 @@
         </div>
 
         <div class="main-content">
-            <h2>Batch 2024-2029</h2>
-            <p style="text-align: center; margin-bottom: 2rem; font-size: 1.1rem;">Department of Architecture - 27 Members</p>
+            <div class="batch-header">
+                <h2 class="batch-title fade-in-left scroll-reveal">Batch 2024-2029</h2>
+                <p class="batch-count scroll-reveal">Department of Architecture - 27 Members</p>
+            </div>
             
-            <div class="students-grid">
+               <div class="students-grid">
                 <div class="student-card">
                     <div class="photo-placeholder">
                         <img src="images/24110001.jpg.jpeg" alt="Student 1" class="student-photo">
@@ -535,8 +909,195 @@
             <p>Indian Institute of Technology Roorkee, Uttarakhand, India</p>
         </div>
     </footer>
+
+    <script>
+        // Dark Mode Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const htmlElement = document.documentElement;
+        
+        // Check for saved theme preference or default to light mode
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        htmlElement.setAttribute('data-theme', currentTheme);
+        themeToggle.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+        
+        themeToggle.addEventListener('click', () => {
+            const theme = htmlElement.getAttribute('data-theme');
+            const newTheme = theme === 'light' ? 'dark' : 'light';
+            
+            htmlElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+        });
+
+        // Scatter Animation for Student Cards
+        function scatterStudentCards() {
+            const cards = document.querySelectorAll('#studentsGrid .student-card');
+            
+            cards.forEach((card, index) => {
+                // Generate random positions from outside the viewport
+                const angle = (Math.random() * 360) * (Math.PI / 180);
+                const distance = 800 + Math.random() * 400;
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+                const rotation = -180 + Math.random() * 360;
+                
+                // Set CSS variables for animation
+                card.style.setProperty('--tx', `${tx}px`);
+                card.style.setProperty('--ty', `${ty}px`);
+                card.style.setProperty('--r', `${rotation}deg`);
+                
+                // Add scatter class immediately (all at once)
+                card.classList.add('scatter');
+                card.style.animationDelay = `${index * 20}ms`;
+            });
+        }
+
+        // Scroll Reveal Animation
+        function revealOnScroll() {
+            const reveals = document.querySelectorAll('.scroll-reveal');
+            
+            reveals.forEach((element) => {
+                const windowHeight = window.innerHeight;
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    element.classList.add('active');
+                }
+            });
+        }
+
+        // Mouse parallax effect for student cards
+        function addParallaxEffect() {
+            const cards = document.querySelectorAll('.student-card');
+            
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function(e) {
+                    this.style.transform = 'translateY(-10px) rotateY(5deg)';
+                });
+                
+                card.addEventListener('mousemove', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateX = (y - centerY) / 10;
+                    const rotateY = (centerX - x) / 10;
+                    
+                    this.style.transform = `translateY(-10px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) rotateX(0) rotateY(0)';
+                });
+            });
+        }
+
+        // Smooth scroll for timeline items
+        function animateTimeline() {
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            
+            timelineItems.forEach((item, index) => {
+                item.style.transitionDelay = `${index * 0.1}s`;
+            });
+        }
+
+        // Counter animation for batch members
+        function animateCounter() {
+            const counter = document.querySelector('.batch-count');
+            if (counter && counter.textContent.includes('27 Members')) {
+                let count = 0;
+                const target = 27;
+                const duration = 2000;
+                const increment = target / (duration / 16);
+                
+                const updateCounter = () => {
+                    count += increment;
+                    if (count < target) {
+                        const beforeText = counter.textContent.split('-')[0] + '- ';
+                        counter.innerHTML = beforeText + `${Math.floor(count)} Members`;
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        const beforeText = counter.textContent.split('-')[0] + '- ';
+                        counter.innerHTML = beforeText + `${target} Members`;
+                    }
+                };
+                
+                // Start counter when element is visible
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            updateCounter();
+                            observer.disconnect();
+                        }
+                    });
+                });
+                
+                observer.observe(counter);
+            }
+        }
+
+        // Add ripple effect on student card click
+        function addRippleEffect() {
+            const cards = document.querySelectorAll('.student-card');
+            
+            cards.forEach(card => {
+                card.addEventListener('click', function(e) {
+                    const ripple = document.createElement('div');
+                    ripple.style.position = 'absolute';
+                    ripple.style.borderRadius = '50%';
+                    ripple.style.background = 'rgba(91, 14, 20, 0.3)';
+                    ripple.style.width = '100px';
+                    ripple.style.height = '100px';
+                    ripple.style.left = e.clientX - this.getBoundingClientRect().left - 50 + 'px';
+                    ripple.style.top = e.clientY - this.getBoundingClientRect().top - 50 + 'px';
+                    ripple.style.animation = 'ripple 0.6s ease-out';
+                    ripple.style.pointerEvents = 'none';
+                    
+                    this.style.position = 'relative';
+                    this.style.overflow = 'hidden';
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+        }
+
+        // Trigger scatter animation when batch section is visible
+        function initScatterOnScroll() {
+            const batchHeader = document.querySelector('.batch-header');
+            let hasAnimated = false;
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !hasAnimated) {
+                        scatterStudentCards();
+                        hasAnimated = true;
+                        observer.disconnect();
+                    }
+                });
+            }, { threshold: 0.3 });
+            
+            if (batchHeader) {
+                observer.observe(batchHeader);
+            }
+        }
+
+        // Initialize all animations
+        window.addEventListener('scroll', revealOnScroll);
+        window.addEventListener('load', () => {
+            revealOnScroll();
+            addParallaxEffect();
+            animateTimeline();
+            animateCounter();
+            addRippleEffect();
+            initScatterOnScroll();
+        });
+    </script>
 </body>
 </html>
-
-
-
